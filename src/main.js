@@ -45,7 +45,7 @@ const onEnterSubmit = event => {
     console.log(event);
     if(event.key==='Enter') {
         let query = viewElems.searchInput.value;
-        getWeatherByCity(query);
+        getWeatherByCity(query).then(data => {console.log(data)});
     }
 };
 
