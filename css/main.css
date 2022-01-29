@@ -42,19 +42,21 @@ body {
   .weather-info__search-view label {
     font-size: 200%;
   }
-  
+ 
   .weather-info__search-view input {
     padding: 10px 50px;
     border: 2px solid black;
     font-size: 150%;
     text-align: center;
   }
-  
+
+
   .weather-info__search-view button {
     padding: 10px 50px;
     border: 2px solid black;
     font-size: 100%;
   }
+
   .weather-info__search-view button:hover {
     cursor: pointer;
   }
