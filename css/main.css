@@ -68,7 +68,13 @@ body {
     justify-content: space-between;
     align-items: center;
   }
-  
+
+  .weather-info__city > img {
+    max-width: 25%;
+    height: auto;
+  }
+
+
   .weather-info__btn-return {
     padding: 5px 25px;
     border: 2px solid black;
