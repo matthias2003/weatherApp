@@ -28,8 +28,12 @@ class WeatherApp{
             this.fadeInOut();
             let query = this.viewElems.searchInput.value;
             getWeatherByCity(query).then(data => {
-            this.displayWeatherData(data);       
-        });
+            this.displayWeatherData(data);  
+            this.viewElems.searchInput.style.borderColor = 'black';     
+        }).catch(()=>{ //Ogarnać errora tutaj trzeba dobrze, czyszczenie inputa
+            this.fadeInOut();
+            this.viewElems.searchInput.style.borderColor = 'red';
+        })
         }
     }
 
