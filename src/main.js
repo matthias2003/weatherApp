@@ -35,7 +35,8 @@ class WeatherApp{
             let query = this.viewElems.searchInput.value;
             getWeatherByCity(query).then(data => {
             this.displayWeatherData(data);  
-            this.viewElems.searchInput.style.borderColor = 'black';     
+            this.viewElems.searchInput.style.borderColor = 'black';
+            this.clearWrongCity();   
         }).catch(()=>{ //Ogarnać errora tutaj trzeba dobrze
             this.fadeInOut();
             this.viewElems.searchInput.style.cssText = 'border-color:red;border-radius:15px;';
@@ -44,14 +45,23 @@ class WeatherApp{
         }
     }
 
-    /*
+    
     wrongCityAlert = () => {
-        let p = document.createElement('p');
-        let text = document.createTextNode('Takie miasto nie istnieje');
-        p.appendChild(text);
-        this.viewElems.weatherSearchView.appendChild(p);
+        if(!(document.getElementById('wrongCityAlert'))) {
+            let p = document.createElement('p');
+            let text = document.createTextNode('Takie miasto nie istnieje!');
+            p.id = 'wrongCityAlert'
+            p.classList.add('wrongCityAlertText')
+            p.appendChild(text);
+            this.viewElems.weatherSearchView.appendChild(p);
+        }
     }
-    */ //Do ogarnięcia
+
+    clearWrongCity = () => {
+        if(document.getElementById('wrongCityAlert')) {
+            document.getElementById('wrongCityAlert').remove();
+        }
+    }
 
     fadeInOut = () => {
         if (this.viewElems.mainContainer.style.opacity === '1' || this.viewElems.mainContainer.style.opacity === ''){

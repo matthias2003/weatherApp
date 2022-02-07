@@ -78,8 +78,12 @@ body {
     height: auto;
   }
 
-
   .weather-info__btn-return {
     padding: 5px 25px;
     border: 2px solid black;
+  }
+
+  .wrongCityAlertText {
+    position: absolute;
+    margin-top: 215px;
   }
