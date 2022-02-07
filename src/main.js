@@ -19,8 +19,14 @@ class WeatherApp{
 
     setupListeners = () => {
         this.viewElems.searchInput.addEventListener('keydown',this.handelSubmit);
-        this.viewElems.searchButton.addEventListener('click',this.handelSubmit)
-        this.viewElems.returnToSearchBtn.addEventListener('click',this.returnToSearch)
+        this.viewElems.searchButton.addEventListener('click',this.handelSubmit);
+        this.viewElems.returnToSearchBtn.addEventListener('click',this.returnToSearch);
+        this.viewElems.searchInput.addEventListener('focus',this.clearInput)
+    }
+
+    clearInput = () => {
+        this.viewElems.searchInput.value = ""; // Czyszczenie inputa jest tutaj o 
+        this.viewElems.searchInput.style.borderColor = 'black'; 
     }
 
     handelSubmit = event => {
@@ -29,11 +35,31 @@ class WeatherApp{
             let query = this.viewElems.searchInput.value;
             getWeatherByCity(query).then(data => {
             this.displayWeatherData(data);  
-            this.viewElems.searchInput.style.borderColor = 'black';     
-        }).catch(()=>{ //Ogarnać errora tutaj trzeba dobrze, czyszczenie inputa
+            this.viewElems.searchInput.style.borderColor = 'black';
+            this.clearWrongCity();   
+        }).catch(()=>{ //Ogarnać errora tutaj trzeba dobrze
             this.fadeInOut();
-            this.viewElems.searchInput.style.borderColor = 'red';
+            this.viewElems.searchInput.style.cssText = 'border-color:red;border-radius:15px;';
+            this.wrongCityAlert();
         })
+        }
+    }
+
+    
+    wrongCityAlert = () => {
+        if(!(document.getElementById('wrongCityAlert'))) {
+            let p = document.createElement('p');
+            let text = document.createTextNode('Takie miasto nie istnieje!');
+            p.id = 'wrongCityAlert'
+            p.classList.add('wrongCityAlertText')
+            p.appendChild(text);
+            this.viewElems.weatherSearchView.appendChild(p);
+        }
+    }
+
+    clearWrongCity = () => {
+        if(document.getElementById('wrongCityAlert')) {
+            document.getElementById('wrongCityAlert').remove();
         }
     }
 
@@ -82,18 +108,6 @@ class WeatherApp{
         this.viewElems.weatherMinTemp.innerText = `Min temperature: ${minTemp} °C`;
     };    
 }
-
-
-const onEnterSubmit = event => {
-    if(event.key==='Enter') {
-        this.fadeInOut();
-        let query = viewElems.searchInput.value;
-        getWeatherByCity(query).then(data => {
-            displayWeatherData(data);       
-        });
-        
-    };
-};
 
 
 document.addEventListener('DOMContentLoaded',new WeatherApp());
