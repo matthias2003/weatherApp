@@ -1,11 +1,7 @@
+const API__KEY = '5846839cf6a9461992a133154232009';
+
 export const getWeatherByCity = city => {
-    return fetch(`https://www.metaweather.com/api/location/search/?query=${city} `)
-    .then(resp => resp.json())
-    .then(data => {
-        const woeid = data[0].woeid;
-        return fetch(`https://www.metaweather.com//api/location/${woeid}`)
-        .then(resp => resp.json())
-        .then(data => data);
-    });
+    return fetch(`http://api.weatherapi.com/v1/forecast.json?key=${API__KEY}&q=${city}&days=1&aqi=no&alerts=no`)
+    .then(resp => resp.json());
 };
 

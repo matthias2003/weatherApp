@@ -25,27 +25,26 @@ class WeatherApp{
     }
 
     clearInput = () => {
-        this.viewElems.searchInput.value = ""; // Czyszczenie inputa jest tutaj o 
+        this.viewElems.searchInput.value = ""; 
         this.viewElems.searchInput.style.borderColor = 'black'; 
+        this.clearWrongCity();
     }
 
     handelSubmit = event => {
         if (event.type === "click" || event.key === "Enter"){
-            this.fadeInOut();
             let query = this.viewElems.searchInput.value;
             getWeatherByCity(query).then(data => {
-            this.displayWeatherData(data);  
-            this.viewElems.searchInput.style.borderColor = 'black';
-            this.clearWrongCity();   
-        }).catch(()=>{ //Ogarnać errora tutaj trzeba dobrze
-            this.fadeInOut();
-            this.viewElems.searchInput.style.cssText = 'border-color:red;border-radius:15px;';
-            this.wrongCityAlert();
-        })
-        }
-    }
+                if (!data.error) {
+                    this.fadeInOut();
+                    this.displayWeatherData(data);
+                    this.viewElems.searchInput.style.borderColor = 'black';
+                    this.clearWrongCity();
+                } else {
+                    this.viewElems.searchInput.style.cssText = 'border-color:red;border-radius:15px;';
+                    this.wrongCityAlert();}
+            })};
+        };
 
-    
     wrongCityAlert = () => {
         if(!(document.getElementById('wrongCityAlert'))) {
             let p = document.createElement('p');
@@ -92,17 +91,22 @@ class WeatherApp{
     };
 
     displayWeatherData = data => {
-        this.switchView();
-        this.fadeInOut();
-    
-        const weather = data.consolidated_weather[0];
-        this.viewElems.weatherCity.innerText = data.title;
-        this.viewElems.weatherIcon.src = `https://www.metaweather.com/static/img/weather/${weather.weather_state_abbr}.svg`;
-        this.viewElems.weatherIcon.alt = weather.weather_state_name;
-        const currTemp = weather.the_temp.toFixed(2);
-        const maxTemp = weather.max_temp.toFixed(2);
-        const minTemp = weather.min_temp.toFixed(2);
-        
+        setTimeout(() => {
+            this.switchView();
+            this.fadeInOut()
+        },500);
+
+        const current_temp = data.current;
+        const forecast_temp = data.forecast.forecastday[0].day;
+
+        this.viewElems.weatherCity.innerText = data.location.name;
+        this.viewElems.weatherIcon.src = data.current.condition.icon;
+        this.viewElems.weatherIcon.alt = data.current.condition.text;
+
+        const currTemp = current_temp.temp_c;
+        const maxTemp = forecast_temp.maxtemp_c;
+        const minTemp = forecast_temp.mintemp_c;
+          
         this.viewElems.weatherCurrentTemp.innerText = `Current temperature: ${currTemp} °C`;
         this.viewElems.weatherMaxTemp.innerText = `Max temperature: ${maxTemp} °C`;
         this.viewElems.weatherMinTemp.innerText = `Min temperature: ${minTemp} °C`;
